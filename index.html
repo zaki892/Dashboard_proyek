@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Pakar Jurusan Kuliah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-white shadow p-4 hidden md:block">
+        <h1 class="text-2xl font-bold mb-6">Sistem Pakar</h1>
+        <nav class="space-y-2">
+          <a href="#" class="block py-2 px-3 rounded hover:bg-gray-200">Dashboard</a>
+          <a href="#" class="block py-2 px-3 rounded hover:bg-gray-200">Input Minat & Bakat</a>
+          <a href="#" class="block py-2 px-3 rounded hover:bg-gray-200">Rekomendasi</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-6 overflow-auto">
+        <h2 class="text-2xl font-semibold mb-4">Form Minat dan Bakat</h2>
+
+        <form id="minatForm" class="bg-white p-4 rounded shadow-md mb-6">
+          <p class="mb-2 font-medium">Pilih minat kamu:</p>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <label><input type="checkbox" name="minat" value="Teknologi" /> Teknologi</label>
+            <label><input type="checkbox" name="minat" value="Bisnis" /> Bisnis</label>
+            <label><input type="checkbox" name="minat" value="Seni" /> Seni</label>
+            <label><input type="checkbox" name="minat" value="Kesehatan" /> Kesehatan</label>
+            <label><input type="checkbox" name="minat" value="Pendidikan" /> Pendidikan</label>
+            <label><input type="checkbox" name="minat" value="Bahasa" /> Bahasa</label>
+          </div>
+          <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
+            Lihat Rekomendasi
+          </button>
+        </form>
+
+        <div id="hasilRekomendasi" class="hidden bg-green-100 p-4 rounded shadow">
+          <h3 class="text-xl font-semibold mb-2">Rekomendasi Jurusan:</h3>
+          <ul class="list-disc list-inside text-green-900" id="jurusanList"></ul>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const form = document.getElementById("minatForm");
+      const hasil = document.getElementById("hasilRekomendasi");
+      const jurusanList = document.getElementById("jurusanList");
+
+      const rekomendasi = {
+        Teknologi: "Teknik Informatika, Sistem Informasi",
+        Bisnis: "Manajemen, Akuntansi",
+        Seni: "Desain Komunikasi Visual, Seni Rupa",
+        Kesehatan: "Kedokteran, Keperawatan",
+        Pendidikan: "Pendidikan Guru, Bimbingan Konseling",
+        Bahasa: "Sastra Inggris, Linguistik"
+      };
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const checked = Array.from(form.elements["minat"])
+          .filter((el) => el.checked)
+          .map((el) => el.value);
+
+        jurusanList.innerHTML = "";
+
+        if (checked.length === 0) {
+          jurusanList.innerHTML = "<li>Silakan pilih minimal satu minat.</li>";
+        } else {
+          checked.forEach((minat) => {
+            const jurusan = rekomendasi[minat];
+            jurusanList.innerHTML += `<li><strong>${minat}:</strong> ${jurusan}</li>`;
+          });
+        }
+
+        hasil.classList.remove("hidden");
+        hasil.scrollIntoView({ behavior: "smooth" });
+      });
+    </script>
+  </body>
+</html>
